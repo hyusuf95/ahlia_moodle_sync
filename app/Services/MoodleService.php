@@ -18,10 +18,10 @@ class MoodleService
 
         $root = config('sync.moodle.root');
 
-        // Isolate Moodle's config.php inclusion in a separate scope
-        call_user_func(function () use ($root) {
+        // Check if redirect() already exists
+        if (!function_exists('redirect')) {
             require_once $root . '/config.php';
-        });
+        }
     }
 
     public function getDB()
