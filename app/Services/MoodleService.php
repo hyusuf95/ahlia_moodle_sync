@@ -16,12 +16,13 @@ class MoodleService
             define('CLI_SCRIPT', true);
         }
 
-        $root = config('sync.moodle.root');
-
-        // Check if redirect() already exists
-        if (!function_exists('redirect')) {
-            require_once $root . '/config.php';
+        //remove decleration of redirect() method so no conflict with laravel
+        if (function_exists('redirect')) {
+            unset($GLOBALS['redirect']);
         }
+
+        $root = config('sync.moodle.root');
+        require_once $root . '/config.php';
     }
 
     public function getDB()
