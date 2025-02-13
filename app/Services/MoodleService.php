@@ -2,52 +2,69 @@
 
 namespace App\Services;
 
+use GuzzleHttp\Client;
+
 /**
  * Class MoodleService.
  */
 class MoodleService
 {
 
-
-    private function requireMoodle()
+    protected function call_moodle_api(string $function_name, array $params)
     {
-        // Define CLI_SCRIPT if running from the command line
-        if (php_sapi_name() === 'cli') {
-            define('CLI_SCRIPT', true);
+        $base_url = config('sync.moodle.url');
+        $token = config('sync.moodle.token');
+
+        $url = "{$base_url}/webservice/rest/server.php?wstoken={$token}&wsfunction={$function_name}&moodlewsrestformat=json";
+
+        foreach ($params as $key => $value) {
+            $url .= "&{$key}={$value}";
         }
 
-        //remove decleration of redirect() method so no conflict with laravel
-        if (function_exists('redirect')) {
-            unset($GLOBALS['redirect']);
+        $client = new Client();
+        $response = $client->get($url);
+
+        return json_decode($response->getBody()->getContents());
+
+    }
+
+    public function get_categories($params = [])
+    {
+        return $this->call_moodle_api('core_course_get_categories', $params);
+    }
+
+    public function get_category_by_idnumber($idnumber)
+    {
+        $params = [
+            'criteria[0][key]' => 'idnumber',
+            'criteria[0][value]' => $idnumber,
+        ];
+        $category = $this->get_categories($params);
+
+        return $category[0] ?? null;
+
+
+    }
+
+
+
+    public function create_categories($categories = [], bool $check_exists = true)
+    {
+        $params = [];
+
+        foreach ($categories as $index => $category) {
+            $params["category[{$index}][name]"] = $category['college_name'];
+            $params["category[{$index}][parent]"] = $category['parent'] ?? 0;
+            $params["category[{$index}][idnumber]"] = $category['college_id'];
+            $params["category[{$index}][description]"] = $category['description'] ?? '';
+            $params["category[{$index}][visible]"] = 1;
         }
+        return $this->call_moodle_api('core_course_create_categories', $params);
 
-        $root = config('sync.moodle.root');
-        require_once $root . '/config.php';
     }
 
-    public function getDB()
-    {
-        $this->requireMoodle();
-        global $DB;
-        return $DB;
-    }
 
-    public function getDBTable($table)
-    {
-        $this->requireMoodle();
-        global $DB;
-        return $DB->get_records($table);
-    }
 
-    public function getDBTableWhere($table, $field, $value)
-    {
-        $this->requireMoodle();
-        global $DB;
-        return $DB->get_records($table, [$field => $value]);
-    }
 
-    public function getCourses()
-    {
-        return $this->getDBTable('course');
-    }
+
 }
