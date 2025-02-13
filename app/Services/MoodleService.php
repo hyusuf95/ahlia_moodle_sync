@@ -11,6 +11,13 @@ class MoodleService
 
     private function requireMoodle()
     {
+
+
+        if (php_sapi_name() === 'cli') {
+            define('CLI_SCRIPT', true);
+        }
+
+
         $root = config('sync.moodle.root');
         require_once $root . '/config.php';
     }
