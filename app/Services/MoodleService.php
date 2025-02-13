@@ -11,15 +11,17 @@ class MoodleService
 
     private function requireMoodle()
     {
-
-
+        // Define CLI_SCRIPT if running from the command line
         if (php_sapi_name() === 'cli') {
             define('CLI_SCRIPT', true);
         }
 
-
         $root = config('sync.moodle.root');
-        require_once $root . '/config.php';
+
+        // Isolate Moodle's config.php inclusion in a separate scope
+        call_user_func(function () use ($root) {
+            require_once $root . '/config.php';
+        });
     }
 
     public function getDB()
