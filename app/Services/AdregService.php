@@ -16,8 +16,11 @@ class AdregService
 
         $url = "{$base_url}/{$function_name}";
 
+
         $client = new Client(['verify' => false]);
         $response = $client->get($url, ['query' => $params]);
+
+        dd($response->getBody()->getContents());
 
         return json_decode($response->getBody()->getContents());
 
@@ -33,9 +36,11 @@ class AdregService
         return $this->call_adreg_api('department', ['college_id' => $college_id]);
     }
 
+    public function sections(int $semester_id, ?int $department_id = null)
+    {
 
-
-
+        $this->call_adreg_api('section', ['semester_id' => $semester_id, 'department_id' => $department_id]);
+    }
 
 
     public static function all_colleges()

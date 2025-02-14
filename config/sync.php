@@ -12,8 +12,8 @@ return [
         'token' => env('MOODLE_TOKEN', 'token'),
 
         'categories'=>[
-            'active_parent' => env('MOODLE_CATEGORY_PARENT', 1),
-            'archive_parent' => env('MOODLE_CATEGORY_ARCHIVE', 2),
+            'active_parent' => env('MOODLE_CATEGORY_PARENT', 6),
+            'archive_parent' => env('MOODLE_CATEGORY_ARCHIVE', -1),
         ]
     ],
 
