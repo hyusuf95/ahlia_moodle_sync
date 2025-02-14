@@ -21,10 +21,6 @@ class MoodleService
         $params['wsfunction'] = $function_name;
 
 
-        //dd($params);
-
-
-
         $client = new Client();
         $response = $client->get($base_url, ['query' => $params]);
 
@@ -55,7 +51,7 @@ class MoodleService
 
 
 
-    public function create_categories($categories = [], int|string $parent, bool $college = false)
+    public function create_categories(array $categories, int|string $parent, bool $college = false)
     {
         $params = [];
 
@@ -64,13 +60,33 @@ class MoodleService
 
         foreach ($categories as $index => $category) {
 
+            $idnumber = $college ? "college_{$category->$id_key}" : "department_{$category->$id_key}";
+
+
             $params["categories[{$index}][name]"] = $category->$name_key;
             $params["categories[{$index}][parent]"] = $parent ?? config('sync.moodle.categories.active_parent');
-            $params["categories[{$index}][idnumber]"] = $category->$id_key;
+            $params["categories[{$index}][idnumber]"] = $idnumber;
         }
 
-        return $this->call_moodle_api('core_course_create_categories', $params);
+        $response =  $this->call_moodle_api('core_course_create_categories', $params);
+        return $response;
 
+    }
+
+
+
+
+
+
+
+
+
+
+
+    public function get_cat_id_by_idnumber($idnumber)
+    {
+        $category = $this->get_category_by_idnumber($idnumber);
+        return $category ? (int) ($category->id) : -1;
     }
 
 

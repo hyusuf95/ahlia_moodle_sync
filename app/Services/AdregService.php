@@ -33,4 +33,15 @@ class AdregService
         return $this->call_adreg_api('department', ['college_id' => $college_id]);
     }
 
+
+
+
+
+
+    public static function all_colleges()
+    {
+        $as = new AdregService();
+        return $as->colleges();
+    }
+
 }
