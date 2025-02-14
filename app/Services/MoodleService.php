@@ -15,14 +15,16 @@ class MoodleService
         $base_url = config('sync.moodle.url');
         $token = config('sync.moodle.token');
 
-        $url = "{$base_url}/webservice/rest/server.php?wstoken={$token}&wsfunction={$function_name}&moodlewsrestformat=json";
+        //add more params to the array
+        $params['moodlewsrestformat'] = 'json';
+        $params['wstoken'] = $token;
+        $params['wsfunction'] = $function_name;
 
-        foreach ($params as $key => $value) {
-            $url .= "&{$key}={$value}";
-        }
+
 
         $client = new Client();
-        $response = $client->get($url);
+        $response = $client->get($base_url, ['query' => $params]);
+
 
         return json_decode($response->getBody()->getContents());
 
@@ -48,16 +50,18 @@ class MoodleService
 
 
 
-    public function create_categories($categories = [], bool $check_exists = true)
+    public function create_categories($categories = [], bool $college = false)
     {
         $params = [];
 
+        $id_key = $college ? 'college_id' : 'department_id';
+        $name_key= $college ? 'college_name' : 'department_name';
+
         foreach ($categories as $index => $category) {
-            $params["category[{$index}][name]"] = $category['college_name'];
-            $params["category[{$index}][parent]"] = $category['parent'] ?? 0;
-            $params["category[{$index}][idnumber]"] = $category['college_id'];
-            $params["category[{$index}][description]"] = $category['description'] ?? '';
-            $params["category[{$index}][visible]"] = 1;
+            $params["categories[{$index}][name]"] = $category[$name_key];
+            $params["categories[{$index}][parent]"] = $category['parent'] ?? 0;
+            $params["categories[{$index}][idnumber]"] = $category[$id_key];
+            $params["categories[{$index}][description]"] = $category['description'] ?? '';
         }
         return $this->call_moodle_api('core_course_create_categories', $params);
 

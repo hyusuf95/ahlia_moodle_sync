@@ -1,20 +1,36 @@
 <?php
 
 namespace App\Services;
+use GuzzleHttp\Client;
 
 /**
  * Class AdregService.
  */
 class AdregService
 {
-    public function colleges()
+
+
+    public function call_adreg_api(string $function_name, array $params)
     {
-        //
+        $base_url = config('sync.adreg.url');
+
+        $url = "{$base_url}/{$function_name}";
+
+        $client = new Client(['verify' => false]);
+        $response = $client->get($url, ['query' => $params]);
+
+        return json_decode($response->getBody()->getContents());
+
     }
 
-    public function departments()
+    public function colleges(?int $college_id = null)
     {
-        //
+        return $this->call_adreg_api('college', ['college_id' => $college_id]);
+    }
+
+    public function departments(?int $college_id = null)
+    {
+        return $this->call_adreg_api('department', ['college_id' => $college_id]);
     }
 
 }
