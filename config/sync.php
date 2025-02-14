@@ -10,6 +10,11 @@ return [
         'root' => env('MOODLE_ROOT', '/var/www/html/'),
         'url' => env('MOODLE_API_URL', 'https://localhost'),
         'token' => env('MOODLE_TOKEN', 'token'),
+
+        'categories'=>[
+            'active_parent' => env('MOODLE_CATEGORY_PARENT', 1),
+            'archive_parent' => env('MOODLE_CATEGORY_ARCHIVE', 2),
+        ]
     ],
 
 
