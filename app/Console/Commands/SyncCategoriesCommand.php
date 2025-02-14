@@ -70,7 +70,6 @@ class SyncCategoriesCommand extends Command
 
         $ms = new MoodleService();
         $parent_id = $ms->get_cat_id_by_idnumber($college_idnumber);
-        $this->info("thie parent id is $parent_id");
         $ms->create_categories(categories: $departments, parent: $parent_id, college: false);
 
     }
