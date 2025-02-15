@@ -15,10 +15,11 @@ function load_moodle()
     require_once $root . '/config.php';
 }
 
-function get_category_id_by_idnumber()
+function get_category_id_by_idnumber(?int $idnumber = null)
 {
     load_moodle();
     global $DB;
+    define('CLI_SCRIPT', true);
 
     $idnumber = $idnumber ?? 'ahlia';
 
