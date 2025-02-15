@@ -14,7 +14,14 @@ return [
         'categories'=>[
             'active_parent' => env('MOODLE_CATEGORY_PARENT', 6),
             'archive_parent' => env('MOODLE_CATEGORY_ARCHIVE', -1),
+        ],
+
+        'courses'=>[
+            'format' => env('MOODLE_COURSE_FORMAT', 'topics'),
+            'ends_after' => env('MOODLE_COURSE_ENDS_AFTER', 12),
         ]
+
+
     ],
 
 
