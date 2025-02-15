@@ -24,6 +24,7 @@ class MoodleService
         $client = new Client();
         $response = $client->get($base_url, ['query' => $params]);
 
+        print_r($params);
 
 
         return  json_decode($response->getBody()->getContents());
@@ -42,6 +43,14 @@ class MoodleService
         $name_key= $college ? 'college_name' : 'department_name';
 
         foreach ($categories as $index => $category) {
+
+            //skip exists categories by idnumber
+
+            $is_exists = \App\Models\MoodleCategory::find2($category->$id_key)->exists();
+
+            if ($is_exists) {
+                continue;
+            }
 
             $idnumber = $college ? "college_{$category->$id_key}" : "department_{$category->$id_key}";
 
