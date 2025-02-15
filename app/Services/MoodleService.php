@@ -85,6 +85,14 @@ class MoodleService
 
 
         foreach ($courses as $index => $course) {
+
+            $existing_course = \App\Models\MoodleCourse::find2($course->section_id);
+
+            if ($existing_course && $existing_course->exists()) {
+                continue;
+            }
+
+
             $params["courses[{$index}][fullname]"] = AdregService::section_name($course);
             $params["courses[{$index}][shortname]"] = AdregService::section_short_name($course);
             $params["courses[{$index}][categoryid]"] = $category_id;
@@ -111,9 +119,11 @@ class MoodleService
             #$params["courses[{$index}][courseformatoptions][0][name]"] = '';
             #$params["courses[{$index}][courseformatoptions][0][value]"] = '';
 
-
-
         }
+
+        return  $this->call_moodle_api($function_name, $params);
+
+
 
     }
 
