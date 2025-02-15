@@ -126,9 +126,16 @@ class MoodleService
             // $params["courses[{$index}][courseformatoptions][0][value]"] = ''; // Commented out as it's optional
 
             // Send the request to Moodle
+
+            //call every 10 courses together to avoid long request
+
+            if (($index + 1) % 10 == 0) {
+                $response = $this->call_moodle_api($function_name, $params);
+                $params = [];
+            }
         }
 
-        $response = $this->call_moodle_api($function_name, $params);
+        // $response = $this->call_moodle_api($function_name, $params);
 
 
 
