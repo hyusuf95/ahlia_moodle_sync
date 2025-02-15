@@ -91,36 +91,31 @@ class MoodleService
             $params["courses[{$index}][idnumber]"] = $course->section_id;
             $params["courses[{$index}][summary]"] = $course->course_title;
             $params["courses[{$index}][format]"] = config('sync.moodle.courses.format');
+            $params["courses[{$index}][summaryformat"] = 0;
             $params["courses[{$index}][startdate]"] = $start_date;
             $params["courses[{$index}][enddate]"] = $course->enddate;
+            $params["courses[{$index}][showgrades]"] = 1;
+            $params["courses[{$index}][newsitems]"] = 5;
+            $params["courses[{$index}][numsections]"] = 7;
+            $params["courses[{$index}][maxbytes]"] = 0;
+            $params["courses[{$index}][showreports]"] = 1;
+            $params["courses[{$index}][visible]"] = 1;
+            #$params["courses[{$index}][hiddensections]"] = 0;
+            $params["courses[{$index}][groupmode]"] = 0;
+            $params["courses[{$index}][groupmodeforce]"] = 0;
+            $params["courses[{$index}][defaultgroupingid]"] = 0;
+            $params["courses[{$index}][enablecompletion]"] = 1;
+            $params["courses[{$index}][completionnotify]"] = 0;
+            #$params["courses[{$index}][lang]"] = 'en';
+            #$params["courses[{$index}][forcetheme]"] = '';
+            #$params["courses[{$index}][courseformatoptions][0][name]"] = '';
+            #$params["courses[{$index}][courseformatoptions][0][value]"] = '';
+
+
+
         }
 
     }
-
-
-
-// courses[0][summaryformat]= int
-// courses[0][format]= string
-// courses[0][showgrades]= int
-// courses[0][newsitems]= int
-// courses[0][startdate]= int
-// courses[0][enddate]= int
-// courses[0][numsections]= int
-// courses[0][maxbytes]= int
-// courses[0][showreports]= int
-// courses[0][visible]= int
-// courses[0][hiddensections]= int
-// courses[0][groupmode]= int
-// courses[0][groupmodeforce]= int
-// courses[0][defaultgroupingid]= int
-// courses[0][enablecompletion]= int
-// courses[0][completionnotify]= int
-// courses[0][lang]= string
-// courses[0][forcetheme]= string
-// courses[0][courseformatoptions][0][name]= string
-// courses[0][courseformatoptions][0][value]= string
-// courses[0][customfields][0][shortname]= string
-// courses[0][customfields][0][value]= string
 
 
 
