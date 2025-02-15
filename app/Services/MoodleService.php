@@ -31,23 +31,6 @@ class MoodleService
 
     }
 
-    public function get_categories($params = [])
-    {
-        return $this->call_moodle_api('core_course_get_categories', $params);
-    }
-
-    public function get_category_by_idnumber($idnumber)
-    {
-        $params = [
-            'criteria[0][key]' => 'idnumber',
-            'criteria[0][value]' => $idnumber,
-        ];
-        $category = $this->get_categories($params);
-
-        return $category[0] ?? null;
-
-
-    }
 
 
 
@@ -95,19 +78,6 @@ class MoodleService
 
 
 
-
-
-
-
-
-
-
-
-    public function get_cat_id_by_idnumber($idnumber)
-    {
-        $category = $this->get_category_by_idnumber($idnumber);
-        return $category ? (int) ($category->id) : -1;
-    }
 
 
 

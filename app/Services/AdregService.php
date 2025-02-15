@@ -20,7 +20,7 @@ class AdregService
         $client = new Client(['verify' => false]);
         $response = $client->get($url, ['query' => $params]);
 
-        dd($response->getBody()->getContents());
+//        dd($response->getBody()->getContents());
 
         return json_decode($response->getBody()->getContents());
 

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\MoodleCategory;
 use App\Services\AdregService;
 use App\Services\MoodleService;
 use Illuminate\Console\Command;
@@ -69,7 +70,7 @@ class SyncCategoriesCommand extends Command
         $college_idnumber = "college_$college_id";
 
         $ms = new MoodleService();
-        $parent_id = $ms->get_cat_id_by_idnumber($college_idnumber);
+        $parent_id = MoodleCategory::find2($college_idnumber)->id;
         $ms->create_categories(categories: $departments, parent: $parent_id, college: false);
 
     }

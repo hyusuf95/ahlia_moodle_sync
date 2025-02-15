@@ -6,3 +6,10 @@ function sayHello()
 }
 
 
+function parseidnumber(string $idnumber)
+{
+    $parts = explode('_', $idnumber);
+    return (int) $parts[1];
+}
+
+
