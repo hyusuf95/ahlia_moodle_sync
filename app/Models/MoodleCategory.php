@@ -2,22 +2,19 @@
 
 namespace App\Models;
 
+use App\Traits\HasIdNumber;
 use Illuminate\Database\Eloquent\Model;
+use MoodleConnection;
 
 class MoodleCategory extends Model
 {
-        protected $connection = 'moodle';
 
-        // Choose the table to reference
+        use MoodleConnection, HasIdNumber;
         protected $table = 'mdl_course_categories';
-        // Set the primary id key reference
-        protected $primaryKey = 'id';
 
 
 
 
-        public static function find2(int|string $idnumber)
-        {
-            return self::where('idnumber', $idnumber)->first();
-        }
+
+
 }
