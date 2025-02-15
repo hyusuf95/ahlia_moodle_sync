@@ -49,4 +49,28 @@ class AdregService
         return $as->colleges();
     }
 
+    public static function section_short_name($section)
+    {
+
+        //ITCS 101-25-21
+
+
+        $course_code = $section->course_code;
+        $short_year = substr(explode('/', $section->semester_year)[1], -2);
+        $semester_no = $section->semester_name == "First" ? 1 : ($section->semester_name == "Second" ? 2 : 3);
+        $section_no = $section->section_no;
+        return "{$course_code}-{$short_year}-{$semester_no}-{$section_no}";
+
+    }
+
+    public static function section_name($section)
+    {
+        //eg : ITCS 101-Sec1-Sem2-2025
+        $course_code = $section->course_code;
+        $section_no = $section->section_no;
+        $semester_no = $section->semester_name == "First" ? 1 : ($section->semester_name == "Second" ? 2 : 3);
+        $full_year = explode('/', $section->semester_year)[1];
+        return "{$course_code}-Sec{$section_no}-Sem{$semester_no}-{$full_year}";
+    }
+
 }
