@@ -20,8 +20,6 @@ class AdregService
         $client = new Client(['verify' => false]);
         $response = $client->get($url, ['query' => $params]);
 
-//        dd($response->getBody()->getContents());
-
         return json_decode($response->getBody()->getContents());
 
     }
@@ -53,8 +51,7 @@ class AdregService
     {
         $as = new AdregService();
         $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id]);
-        dd($semester[0]->semester_start_date);
-        return strtotime($semester->semester_start_date);
+        return strtotime($semester[0]->semester_start_date);
     }
 
     public static function semester_end_date(int $semester_id)
