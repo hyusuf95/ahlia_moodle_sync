@@ -42,7 +42,8 @@ class CreateCoursesCommand extends Command
 
 
         if ($department >0) {
-            $department_id = \App\Models\MoodleCourse::find2($department)->id;
+
+            $department_id = \App\Models\MoodleCategory::find2($department)->id;
             $sections = $adreg->sections($semester, $department);
             $this->info("Syncing {$sections->count()} sections");
             $moodle->create_courses($sections, $department_id);
@@ -55,7 +56,7 @@ class CreateCoursesCommand extends Command
             $departments = $adreg->departments();
 
             foreach ($departments as $department) {
-                $department_id = \App\Models\MoodleCourse::find2($department->department_id)->id;
+                $department_id = \App\Models\MoodleCategory::find2($department->department_id)->id;
                 $sections = $adreg->sections($semester, $department->department_id);
                 $this->info("Syncing {$sections->count()} sections");
                 $moodle->create_courses($sections, $department_id);
