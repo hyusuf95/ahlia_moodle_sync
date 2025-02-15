@@ -41,7 +41,7 @@ class CreateCoursesCommand extends Command
 
 
 
-        if ($department) {
+        if ($department >0) {
             $department_id = \App\Models\MoodleCourse::find2($department)->id;
             $sections = $adreg->sections($semester, $department);
             $this->info("Syncing {$sections->count()} sections");
