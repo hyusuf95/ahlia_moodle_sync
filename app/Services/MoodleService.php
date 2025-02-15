@@ -67,13 +67,8 @@ class MoodleService
 
     }
 
-
     public function create_courses($courses, int $category_id)
     {
-
-
-
-        //if courses empty, return
         if (empty($courses)) {
             return;
         }
@@ -84,14 +79,9 @@ class MoodleService
 
         $start_date = AdregService::semester_start_date($semester);
         $end_date = AdregService::semester_end_date($semester);
-
         $end_date = strtotime("+" . config('sync.moodle.courses.ends_after') . " months", $end_date);
 
-
         foreach ($courses as $index => $course) {
-
-
-
             $existing_course = \App\Models\MoodleCourse::find2($course->section_id);
 
             if ($existing_course && $existing_course->exists()) {
@@ -105,7 +95,7 @@ class MoodleService
             $params["courses[{$index}][idnumber]"] = $course->section_id;
             $params["courses[{$index}][summary]"] = $course->course_title;
             $params["courses[{$index}][format]"] = config('sync.moodle.courses.format');
-            $params["courses[{$index}][summaryformat]"] = 0; // Fixed: Added missing closing bracket
+            $params["courses[{$index}][summaryformat]"] = 0;
             $params["courses[{$index}][startdate]"] = $start_date;
             $params["courses[{$index}][enddate]"] = $end_date;
             $params["courses[{$index}][showgrades]"] = 1;
@@ -114,31 +104,29 @@ class MoodleService
             $params["courses[{$index}][maxbytes]"] = 0;
             $params["courses[{$index}][showreports]"] = 1;
             $params["courses[{$index}][visible]"] = 1;
-            // $params["courses[{$index}][hiddensections]"] = 0; // Commented out as it's optional
             $params["courses[{$index}][groupmode]"] = 0;
             $params["courses[{$index}][groupmodeforce]"] = 0;
             $params["courses[{$index}][defaultgroupingid]"] = 0;
             $params["courses[{$index}][enablecompletion]"] = 1;
             $params["courses[{$index}][completionnotify]"] = 0;
-            // $params["courses[{$index}][lang]"] = 'en'; // Commented out as it's optional
-            // $params["courses[{$index}][forcetheme]"] = ''; // Commented out as it's optional
-            // $params["courses[{$index}][courseformatoptions][0][name]"] = ''; // Commented out as it's optional
-            // $params["courses[{$index}][courseformatoptions][0][value]"] = ''; // Commented out as it's optional
 
-            // Send the request to Moodle
-
-            //call every 10 courses together to avoid long request
-
+            // Send the request to Moodle every 10 courses
             if (($index + 1) % 10 == 0) {
                 $response = $this->call_moodle_api($function_name, $params);
-                $params = [];
+                if (!$response) {
+                    // Handle error, log or retry
+                }
+                $params = []; // Reset params for the next batch
             }
         }
 
-        // $response = $this->call_moodle_api($function_name, $params);
-
-
-
+        // Send the remaining courses
+        if (!empty($params)) {
+            $response = $this->call_moodle_api($function_name, $params);
+            if (!$response) {
+                // Handle error, log or retry
+            }
+        }
     }
 
 
