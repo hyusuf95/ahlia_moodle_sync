@@ -47,7 +47,7 @@ class CreateCoursesCommand extends Command
 
             $department_id = \App\Models\MoodleCategory::find2($department_idnumber)->id;
             $sections = $adreg->sections($semester, $department);
-            $this->info("Syncing {$sections->count()} sections");
+            $this->info("Syncing " . count($sections) . " sections for {$department_idnumber}");
             $moodle->create_courses($sections, $department_id);
 
 
