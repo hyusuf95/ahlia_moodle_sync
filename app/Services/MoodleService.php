@@ -117,18 +117,7 @@ class MoodleService
             // $params["courses[{$index}][courseformatoptions][0][name]"] = ''; // Commented out as it's optional
             // $params["courses[{$index}][courseformatoptions][0][value]"] = ''; // Commented out as it's optional
 
-            // Debugging: Log the $params array to ensure all keys are set correctly
-            error_log(print_r($params, true));
-
             // Send the request to Moodle
-            try {
-                $response = $this->call_moodle_api($function_name, $params);
-            } catch (\Exception $e) {
-                // Handle the exception
-                error_log("Error creating course: " . $e->getMessage());
-                throw $e;
-            }
-
         }
 
         $response = $this->call_moodle_api($function_name, $params);
