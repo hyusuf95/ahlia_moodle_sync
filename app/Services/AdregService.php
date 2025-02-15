@@ -50,15 +50,15 @@ class AdregService
     public static function semester_start_date(int $semester_id)
     {
         $as = new AdregService();
-        $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id]);
-        return strtotime($semester[0]->semester_start_date);
+        $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id])[0];
+        return strtotime($semester->semester_start_date);
     }
 
     public static function semester_end_date(int $semester_id)
     {
         $as = new AdregService();
         $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id])[0];
-        return strtotime($semester[0]->semester_end_date);
+        return strtotime($semester->semester_end_date);
     }
 
 
