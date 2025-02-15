@@ -1,5 +1,6 @@
 <?php
 
+use App\Moodle\MoodleConfigLoader;
 
 function sayHello()
 {
@@ -21,14 +22,9 @@ function load_moodle()
 
 function get_category_id_by_idnumber(?int $idnumber = null)
 {
-    load_moodle();
-    global $DB;
 
-    $idnumber = $idnumber ?? 'ahlia';
+    $moodle = new MoodleConfigLoader();
 
-    $category = $DB->get_record('course_categories', ['idnumber' => $idnumber]);
-
-    return $category ? (int) ($category->id) : -1;
-
+    $moodle->get_category_by_idnumber('college_10');
 
 }
