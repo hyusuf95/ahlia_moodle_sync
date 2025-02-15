@@ -42,23 +42,24 @@ class MoodleService
         $id_key = $college ? 'college_id' : 'department_id';
         $name_key= $college ? 'college_name' : 'department_name';
 
+
         foreach ($categories as $index => $category) {
+
+
 
             //skip exists categories by idnumber
 
-            $existing_category = \App\Models\MoodleCategory::find2($category->$id_key);
-
-
-            echo "Checking {$category->$name_key} with idnumber {$category->$id_key} \n";
 
 
 
+
+
+            $idnumber = $college ? get_college_idnumber($category->$id_key) : get_department_idnumber($category->$id_key);
+            $existing_category = \App\Models\MoodleCategory::find2($idnumber);
             if ($existing_category && $existing_category->exists()) {
-
                 continue;
             }
 
-            $idnumber = $college ? "college_{$category->$id_key}" : "department_{$category->$id_key}";
 
             $params["categories[{$index}][name]"] = $category->$name_key;
             $params["categories[{$index}][parent]"] = $parent ?? config('sync.moodle.categories.active_parent');
