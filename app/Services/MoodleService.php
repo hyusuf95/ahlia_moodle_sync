@@ -23,10 +23,6 @@ class MoodleService
 
         $client = new Client();
         $response = $client->get($base_url, ['query' => $params]);
-
-        print_r($params);
-
-
         return json_decode($response->getBody()->getContents());
 
 
@@ -86,9 +82,10 @@ class MoodleService
 
         foreach ($courses as $index => $course) {
 
-            $category_idnumber = get_department_idnumber($course->department_id);
 
-            $existing_course = \App\Models\MoodleCourse::find2($course->section_id);
+            $department_idnumber = get_department_idnumber($course->department_id);
+
+            $existing_course = \App\Models\MoodleCourse::find2($department_idnumber);
 
             if ($existing_course && $existing_course->exists()) {
                 continue;
@@ -136,7 +133,6 @@ class MoodleService
         }
 
         $response = $this->call_moodle_api($function_name, $params);
-        dd($response);
 
 
 
