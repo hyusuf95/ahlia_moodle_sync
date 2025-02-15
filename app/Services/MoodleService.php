@@ -27,7 +27,7 @@ class MoodleService
         print_r($params);
 
 
-        return  json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody()->getContents());
 
 
     }
@@ -40,7 +40,7 @@ class MoodleService
         $params = [];
 
         $id_key = $college ? 'college_id' : 'department_id';
-        $name_key= $college ? 'college_name' : 'department_name';
+        $name_key = $college ? 'college_name' : 'department_name';
 
 
         foreach ($categories as $index => $category) {
@@ -66,7 +66,7 @@ class MoodleService
             $params["categories[{$index}][idnumber]"] = $idnumber;
         }
 
-        $response =  $this->call_moodle_api('core_course_create_categories', $params);
+        $response = $this->call_moodle_api('core_course_create_categories', $params);
         return $response;
 
     }
@@ -81,7 +81,7 @@ class MoodleService
         $start_date = AdregService::semester_start_date($semester);
         $end_date = AdregService::semester_end_date($semester);
 
-        $end_date = strtotime("+".config('sync.moodle.courses.ends_after')." months", $end_date);
+        $end_date = strtotime("+" . config('sync.moodle.courses.ends_after') . " months", $end_date);
 
 
         foreach ($courses as $index => $course) {
@@ -94,14 +94,14 @@ class MoodleService
                 continue;
             }
 
-
+            // Set the course parameters
             $params["courses[{$index}][fullname]"] = AdregService::section_name($course);
             $params["courses[{$index}][shortname]"] = AdregService::section_short_name($course);
             $params["courses[{$index}][categoryid]"] = $category_id;
             $params["courses[{$index}][idnumber]"] = $course->section_id;
             $params["courses[{$index}][summary]"] = $course->course_title;
             $params["courses[{$index}][format]"] = config('sync.moodle.courses.format');
-            $params["courses[{$index}][summaryformat"] = 0;
+            $params["courses[{$index}][summaryformat]"] = 0; // Fixed: Added missing closing bracket
             $params["courses[{$index}][startdate]"] = $start_date;
             $params["courses[{$index}][enddate]"] = $end_date;
             $params["courses[{$index}][showgrades]"] = 1;
@@ -110,20 +110,32 @@ class MoodleService
             $params["courses[{$index}][maxbytes]"] = 0;
             $params["courses[{$index}][showreports]"] = 1;
             $params["courses[{$index}][visible]"] = 1;
-            #$params["courses[{$index}][hiddensections]"] = 0;
+            // $params["courses[{$index}][hiddensections]"] = 0; // Commented out as it's optional
             $params["courses[{$index}][groupmode]"] = 0;
             $params["courses[{$index}][groupmodeforce]"] = 0;
             $params["courses[{$index}][defaultgroupingid]"] = 0;
             $params["courses[{$index}][enablecompletion]"] = 1;
             $params["courses[{$index}][completionnotify]"] = 0;
-            #$params["courses[{$index}][lang]"] = 'en';
-            #$params["courses[{$index}][forcetheme]"] = '';
-            #$params["courses[{$index}][courseformatoptions][0][name]"] = '';
-            #$params["courses[{$index}][courseformatoptions][0][value]"] = '';
+            // $params["courses[{$index}][lang]"] = 'en'; // Commented out as it's optional
+            // $params["courses[{$index}][forcetheme]"] = ''; // Commented out as it's optional
+            // $params["courses[{$index}][courseformatoptions][0][name]"] = ''; // Commented out as it's optional
+            // $params["courses[{$index}][courseformatoptions][0][value]"] = ''; // Commented out as it's optional
+
+            // Debugging: Log the $params array to ensure all keys are set correctly
+            error_log(print_r($params, true));
+
+            // Send the request to Moodle
+            try {
+                $response = $this->call_moodle_api($function_name, $params);
+            } catch (\Exception $e) {
+                // Handle the exception
+                error_log("Error creating course: " . $e->getMessage());
+                throw $e;
+            }
 
         }
 
-        $response =   $this->call_moodle_api($function_name, $params);
+        $response = $this->call_moodle_api($function_name, $params);
         dd($response);
 
 
