@@ -103,7 +103,7 @@ class MoodleService
             $params["courses[{$index}][format]"] = config('sync.moodle.courses.format');
             $params["courses[{$index}][summaryformat"] = 0;
             $params["courses[{$index}][startdate]"] = $start_date;
-            $params["courses[{$index}][enddate]"] = $course->enddate;
+            $params["courses[{$index}][enddate]"] = $end_date;
             $params["courses[{$index}][showgrades]"] = 1;
             $params["courses[{$index}][newsitems]"] = 5;
             $params["courses[{$index}][numsections]"] = 7;
