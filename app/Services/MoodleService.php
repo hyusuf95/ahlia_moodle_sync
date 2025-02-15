@@ -74,6 +74,26 @@ class MoodleService
     }
 
 
+    public function create_courses($courses)
+    {
+        $function_name = 'core_course_create_courses';
+        $params = [];
+
+
+        foreach ($courses as $index => $course) {
+            $params["courses[{$index}][fullname]"] = AdregService::section_name($course);
+            $params["courses[{$index}][shortname]"] = AdregService::section_short_name($course);
+            $params["courses[{$index}][categoryid]"] = $course->categoryid;
+            $params["courses[{$index}][idnumber]"] = $course->idnumber;
+            $params["courses[{$index}][summary]"] = $course->summary;
+            $params["courses[{$index}][format]"] = $course->format;
+            $params["courses[{$index}][startdate]"] = $course->startdate;
+            $params["courses[{$index}][enddate]"] = $course->enddate;
+        }
+
+    }
+
+
 
 
 
