@@ -39,7 +39,7 @@ class AdregService
     public function sections(int $semester_id, ?int $department_id = null)
     {
 
-        $this->call_adreg_api('section', ['semester_id' => $semester_id, 'department_id' => $department_id]);
+        return $this->call_adreg_api('section', ['semester_id' => $semester_id, 'department_id' => $department_id]);
     }
 
 
@@ -62,6 +62,8 @@ class AdregService
         $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id])[0];
         return strtotime($semester->semester_end_date);
     }
+
+
 
     public static function section_short_name($section)
     {
