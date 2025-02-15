@@ -123,7 +123,8 @@ class MoodleService
 
         }
 
-        return  $this->call_moodle_api($function_name, $params);
+        $response =   $this->call_moodle_api($function_name, $params);
+        dd($response);
 
 
 
