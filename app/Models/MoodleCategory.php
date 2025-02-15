@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MoodleCourse extends Model
+class MoodleCategory extends Model
 {
         protected $connection = 'moodle';
 
@@ -16,7 +16,7 @@ class MoodleCourse extends Model
 
 
 
-        public static function find2(int $idnumber)
+        public static function find2(int|string $idnumber)
         {
             return self::where('idnumber', $idnumber)->first();
         }
