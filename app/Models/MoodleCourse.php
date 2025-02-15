@@ -10,8 +10,10 @@ use Illuminate\Database\Eloquent\Model;
 class MoodleCourse extends Model
 {
 
-    use MoodleConnection, HasIdNumber;
-    protected $table = 'mdl_course';
+    use HasIdNumber;
 
+    protected $connection = 'moodle';
+    protected $primaryKey = 'id';
+    protected $table = 'mdl_course';
 
 }
