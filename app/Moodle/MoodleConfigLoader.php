@@ -3,11 +3,10 @@
 namespace App\Moodle;
 
 $moodle_path = config('sync.moodle.root');
-    if (php_sapi_name() === 'cli') {
-        define('CLI_SCRIPT', true);
-    }
+if (php_sapi_name() === 'cli') {
+    define('CLI_SCRIPT', true);
+}
 require_once $moodle_path . '/config.php';
-
 
 class MoodleConfigLoader
 {
@@ -22,6 +21,4 @@ class MoodleConfigLoader
         global $DB;
         return $DB->get_record('course_categories', ['idnumber' => $idnumber]);
     }
-
-
 }
