@@ -46,8 +46,7 @@ class MoodleService
 
             //skip exists categories by idnumber
 
-            $is_exists = \App\Models\MoodleCategory::find2($category->$id_key)->exists();
-
+            $is_exists = \App\Models\MoodleCategory::find2($category->$id_key);
             if ($is_exists) {
                 continue;
             }
