@@ -53,6 +53,7 @@ class AdregService
     {
         $as = new AdregService();
         $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id]);
+        dd($semester[0]->semester_start_date);
         return strtotime($semester->semester_start_date);
     }
 
@@ -60,7 +61,7 @@ class AdregService
     {
         $as = new AdregService();
         $semester = $as->call_adreg_api('semester', ['semester_id' => $semester_id])[0];
-        return strtotime($semester->semester_end_date);
+        return strtotime($semester[0]->semester_end_date);
     }
 
 
