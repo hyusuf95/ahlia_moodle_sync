@@ -70,6 +70,14 @@ class MoodleService
 
     public function create_courses($courses, int $category_id)
     {
+
+
+
+        //if courses empty, return
+        if (empty($courses)) {
+            return;
+        }
+
         $function_name = 'core_course_create_courses';
         $params = [];
         $semester = $courses[0]->semester_id;
