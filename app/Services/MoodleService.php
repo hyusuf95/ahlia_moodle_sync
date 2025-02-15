@@ -83,9 +83,8 @@ class MoodleService
         foreach ($courses as $index => $course) {
 
 
-            $department_idnumber = get_department_idnumber($course->department_id);
 
-            $existing_course = \App\Models\MoodleCourse::find2($department_idnumber);
+            $existing_course = \App\Models\MoodleCourse::find2($course->section_id);
 
             if ($existing_course && $existing_course->exists()) {
                 continue;
