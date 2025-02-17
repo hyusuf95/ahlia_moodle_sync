@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Services;
+
 use GuzzleHttp\Client;
 
 /**
@@ -21,7 +22,6 @@ class AdregService
         $response = $client->get($url, ['query' => $params]);
 
         return json_decode($response->getBody()->getContents());
-
     }
 
     public function colleges(?int $college_id = null)
@@ -73,8 +73,7 @@ class AdregService
         $short_year = substr(explode('/', $section->semester_year)[1], -2);
         $semester_no = $section->semester_name == "First" ? 1 : ($section->semester_name == "Second" ? 2 : 3);
         $section_no = $section->section_no;
-        return "{$course_code}-{$short_year}-{$semester_no}-{$section_no}";
-
+        return "{$course_code}-{$short_year}-{$semester_no}{$section_no}";
     }
 
     public static function section_name($section)
@@ -86,5 +85,4 @@ class AdregService
         $full_year = explode('/', $section->semester_year)[1];
         return "{$course_code}-Sec{$section_no}-Sem{$semester_no}-{$full_year}";
     }
-
 }
