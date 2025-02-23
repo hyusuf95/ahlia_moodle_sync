@@ -11,12 +11,12 @@ return [
         'url' => env('MOODLE_API_URL', 'https://localhost'),
         'token' => env('MOODLE_TOKEN', 'token'),
 
-        'categories'=>[
-            'active_parent' => env('MOODLE_CATEGORY_PARENT', 6),
+        'categories' => [
+            'active_parent' => env('MOODLE_CATEGORY_PARENT', 0),
             'archive_parent' => env('MOODLE_CATEGORY_ARCHIVE', -1),
         ],
 
-        'courses'=>[
+        'courses' => [
             'format' => env('MOODLE_COURSE_FORMAT', 'topics'),
             'ends_after' => env('MOODLE_COURSE_ENDS_AFTER', 12),
         ]
