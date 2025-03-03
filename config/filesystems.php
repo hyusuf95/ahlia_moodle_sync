@@ -41,7 +41,7 @@ return [
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
             'throw' => false,
             'report' => false,
@@ -59,6 +59,16 @@ return [
             'throw' => false,
             'report' => false,
         ],
+
+        'aubh' => [
+            'driver' => 'sftp',
+            'host' => '40.123.217.100',
+            'username' => 'aubh',
+            'privateKey' => env('AUBH_SSH_KEY'),
+            'visibility' => 'private',
+            'root' => env('MOODLE_COURSE_BACKUP_FOLDER', '/var/www/html/moodledata/backup'),
+
+        ]
 
     ],
 
