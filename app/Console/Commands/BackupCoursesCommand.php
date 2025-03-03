@@ -48,14 +48,21 @@ class BackupCoursesCommand extends Command
             $backedup = file_get_contents("backedup.txt");
             //get first number before the dash
 
-            $backed_up_id = explode('-', $backedup)[0];
 
-            if ($backed_up_id == $moodle_id) {
-                $this->info("Course $idnumber already backed up");
-                continue;
+            //put each line in array 
+            $backedup = explode("\n", $backedup);
+
+            foreach ($backedup as $line) {
+                $line = explode("-", $line);
+                $backed_up_id = $line[0];
+                if ($backed_up_id == $idnumber) {
+                    $this->info("Course $idnumber already backed up");
+                    dd($backed_up_id, $moodle_id);
+                    continue;
+                }
             }
 
-            dd($backed_up_id, $moodle_id);
+          
 
 
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
