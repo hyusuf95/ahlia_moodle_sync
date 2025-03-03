@@ -55,6 +55,8 @@ class BackupCoursesCommand extends Command
                 continue;
             }
 
+            dd($backed_up_id, $moodle_id);
+
 
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
