@@ -41,6 +41,21 @@ class BackupCoursesCommand extends Command
             $moodle_course = MoodleCourse::find2($idnumber);
             $moodle_id = $moodle_course->id;
 
+
+            $this->info("If backup file exists in $backup_folder, skip this course");
+
+            //read from backedup.txt file
+            $backedup = file_get_contents("backedup.txt");
+            //get first number before the dash
+
+            $backed_up_id = explode('-', $backedup)[0];
+
+            if ($backed_up_id == $moodle_id) {
+                $this->info("Course $idnumber already backed up");
+                continue;
+            }
+
+
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
             $this->info("Backing up course $idnumber");
@@ -58,7 +73,7 @@ class BackupCoursesCommand extends Command
             $this->info("Deleting local backup");
             exec("rm -rf $backup_folder/*");
 
-            
+
         }
     }
 }
