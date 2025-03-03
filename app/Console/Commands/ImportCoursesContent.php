@@ -43,7 +43,7 @@ class ImportCoursesContent extends Command
             $shortname = str_replace(' ', '_', $shortname);
             $shortname = strtolower($shortname);
 
-            $moodle_root = config('sync.moodle.source_root');
+            $moodle_root = config('sync.moodle.root');
             $backup_folder = config('sync.moodle.courses.backup_folder');
 
             //find file that contains the shortname
