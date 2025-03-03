@@ -27,6 +27,27 @@ class BackupCoursesCommand extends Command
      */
     public function handle()
     {
+
+            //read from backedup.txt file
+            $backedup = file_get_contents("backedup.txt");
+            //get first number before the dash
+
+
+            //put each line in array 
+            $backedup = explode("\n", $backedup);
+            $backed_up_ids = [];
+            foreach ($backedup as $line)
+            {
+                $backed_up_ids[] = explode("-", $line)[0];
+
+            }
+
+        
+
+
+
+
+
         //if semester not provided, ask for it
         $semester_id = (int) ($this->option('semester'));
 
@@ -47,30 +68,12 @@ class BackupCoursesCommand extends Command
 
             $moodle_id = $moodle_course->id;
 
+            if (in_array($moodle_id, $backed_up_ids))
+            {
+                $this->info("Course $idnumber already backed up");
+                continue;
+            }
 
-            //read from backedup.txt file
-            $backedup = file_get_contents("backedup.txt");
-            //get first number before the dash
-
-
-            //put each line in array 
-            $backedup = explode("\n", $backedup);
-
-            foreach ($backedup as $line) {
-
-                $line = explode("-", $line);
-
-                $backed_up_id = (int) $line[0];
-
-                $this->info("backed up id: $backed_up_id");
-                $this->info("moodle id: $moodle_id");
-                $this->info("**************************************");
-
-                if ($backed_up_id == $moodle_id) {
-                    $this->info("Skipping course $idnumber");
-                    
-                    continue;
-                }
 
                 $this->info("Backing up course $idnumber");
 
@@ -93,7 +96,7 @@ class BackupCoursesCommand extends Command
                 // exec("rm -rf $backup_folder/*");
 
 
-            }
+       
 
 
 
