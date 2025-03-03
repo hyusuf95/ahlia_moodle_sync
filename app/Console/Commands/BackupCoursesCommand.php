@@ -38,11 +38,11 @@ class BackupCoursesCommand extends Command
 
         foreach ($courses as $course) {
             $idnumber = $course->section_id;
-            $moodle_id = MoodleCourse::find2($idnumber)->id;
+            $moodle_course = MoodleCourse::find2($idnumber);
+            $moodle_id = $moodle_course->id;
 
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
-
-            dd($command);
+            exec($command);
         }
     }
 }

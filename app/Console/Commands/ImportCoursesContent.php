@@ -34,9 +34,16 @@ class ImportCoursesContent extends Command
 
         foreach ($courses as $course) {
             $idnumber = $course->section_id;
-            $id = MoodleCourse::find2($idnumber)->id;
+            $moodle_course = MoodleCourse::find2($idnumber);
+            $shortname = $moodle_course->shortname;
 
-            $this->info("The Course with id $id has idnumber $idnumber");
+            $moodle_root = config('sync.moodle.source_root');
+            $backup_folder = config('sync.moodle.courses.backup_folder');
+
+            //find file that contains the shortname
+            $find = "find $backup_folder -name '*$shortname*'";
+
+            dd($find);
         }
     }
 }
