@@ -56,7 +56,7 @@ class ImportCoursesContent extends Command
 
             if ($backup_file) {
                 $this->info("Restoring $shortname");
-                $restore = "php $moodle_root/admin/cli/restore_backup.php --file=$backup_file --courseid=$moodle_id";
+                $restore = "php $moodle_root/admin/cli/restore_backup.php --file=$backup_file --courseid=$moodle_id --overwrite=1";
 
                 $output = shell_exec($restore);
                 $this->info($output);
