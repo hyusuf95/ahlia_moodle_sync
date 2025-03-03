@@ -38,6 +38,11 @@ class ImportCoursesContent extends Command
             $moodle_id = $moodle_course->id;
             $shortname = $moodle_course->shortname;
 
+
+            //replace space in short name with _, and make it lowercase
+            $shortname = str_replace(' ', '_', $shortname);
+            $shortname = strtolower($shortname);
+
             $moodle_root = config('sync.moodle.source_root');
             $backup_folder = config('sync.moodle.courses.backup_folder');
 
