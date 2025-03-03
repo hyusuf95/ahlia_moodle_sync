@@ -40,7 +40,7 @@ class BackupCoursesCommand extends Command
             $idnumber = $course->section_id;
             $moodle_id = MoodleCourse::find2($idnumber)->id;
 
-            $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$moodle_path/$backup_folder";
+            $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
             dd($command);
         }
