@@ -45,6 +45,20 @@ class BackupCoursesCommand extends Command
 
             $this->info("Backing up course $idnumber");
             exec($command);
+
+
+            //transfering backup to remote server
+            $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
+            $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
+
+            $this->info("Transferring backup to remote server");
+            exec($remote_command);
+
+            //delete local backup
+            $this->info("Deleting local backup");
+            exec("rm -rf $backup_folder/*");
+
+            
         }
     }
 }
