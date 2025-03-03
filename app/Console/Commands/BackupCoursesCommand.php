@@ -57,8 +57,14 @@ class BackupCoursesCommand extends Command
             $backedup = explode("\n", $backedup);
 
             foreach ($backedup as $line) {
+
                 $line = explode("-", $line);
+
                 $backed_up_id = (int) $line[0];
+
+                $this->info("backed up id: $backed_up_id");
+                $this->info("moodle id: $moodle_id");
+                $this->info("**************************************");
 
                 if ($backed_up_id == $moodle_id) {
                     $this->info("Skipping course $idnumber");
