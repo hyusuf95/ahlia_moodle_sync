@@ -58,26 +58,27 @@ class BackupCoursesCommand extends Command
 
                 if ($backed_up_id == $moodle_id) {
                     $this->info("Skipping course $idnumber");
+                    
                     continue;
                 }
 
                 
-                $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
+                // $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
-                $this->info("Backing up course $idnumber");
-                exec($command);
+                // $this->info("Backing up course $idnumber");
+                // exec($command);
 
 
-                //transfering backup to remote server
-                $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
-                $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
+                // //transfering backup to remote server
+                // $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
+                // $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
 
-                $this->info("Transferring backup to remote server");
-                exec($remote_command);
+                // $this->info("Transferring backup to remote server");
+                // exec($remote_command);
 
-                //delete local backup
-                $this->info("Deleting local backup");
-                exec("rm -rf $backup_folder/*");
+                // //delete local backup
+                // $this->info("Deleting local backup");
+                // exec("rm -rf $backup_folder/*");
 
 
             }
