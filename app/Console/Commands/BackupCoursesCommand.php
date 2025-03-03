@@ -58,14 +58,12 @@ class BackupCoursesCommand extends Command
  
                 if ($backed_up_id == $moodle_id) {
                     $this->info("Course $idnumber already backed up");
-                    dd($backed_up_id, $moodle_id);
+                    
                     continue;
                 }
-            }
-
-          
-
-
+                else
+                {
+                    
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
             $this->info("Backing up course $idnumber");
@@ -82,6 +80,12 @@ class BackupCoursesCommand extends Command
             //delete local backup
             $this->info("Deleting local backup");
             exec("rm -rf $backup_folder/*");
+                }
+            }
+
+          
+
+
 
 
         }
