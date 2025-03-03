@@ -39,10 +39,14 @@ class BackupCoursesCommand extends Command
         foreach ($courses as $course) {
             $idnumber = $course->section_id;
             $moodle_course = MoodleCourse::find2($idnumber);
+            
+            if (!$moodle_course) {
+                $this->info("Course $idnumber not found in moodle");
+                continue;
+            }
+
             $moodle_id = $moodle_course->id;
 
-
-            $this->info("If backup file exists in $backup_folder, skip this course");
 
             //read from backedup.txt file
             $backedup = file_get_contents("backedup.txt");
