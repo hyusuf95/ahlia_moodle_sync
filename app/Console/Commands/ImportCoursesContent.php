@@ -42,8 +42,9 @@ class ImportCoursesContent extends Command
 
             //find file that contains the shortname
             $find = "find $backup_folder -name '*$shortname*'";
+            $backup_file = exec($find);
 
-            dd($find);
+            $command = "php $moodle_root/admin/cli/restore.php --file=$backup_file --shortname=$shortname";
         }
     }
 }

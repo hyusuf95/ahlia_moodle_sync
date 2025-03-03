@@ -42,6 +42,8 @@ class BackupCoursesCommand extends Command
             $moodle_id = $moodle_course->id;
 
             $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
+
+            $this->info("Backing up course $idnumber");
             exec($command);
         }
     }
