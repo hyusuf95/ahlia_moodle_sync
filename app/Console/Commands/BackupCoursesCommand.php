@@ -28,21 +28,27 @@ class BackupCoursesCommand extends Command
     public function handle()
     {
 
-            //read from backedup.txt file
+
+        $backed_up_ids = [];
+        if (file_exists("backedup.txt")) {
+
             $backedup = file_get_contents("backedup.txt");
-            //get first number before the dash
 
 
-            //put each line in array 
+
+
             $backedup = explode("\n", $backedup);
-            $backed_up_ids = [];
-            foreach ($backedup as $line)
-            {
+
+            foreach ($backedup as $line) {
                 $backed_up_ids[] = explode("-", $line)[0];
 
             }
+        }
 
-        
+
+
+
+
 
 
 
@@ -60,7 +66,7 @@ class BackupCoursesCommand extends Command
         foreach ($courses as $course) {
             $idnumber = $course->section_id;
             $moodle_course = MoodleCourse::find2($idnumber);
-            
+
             if (!$moodle_course) {
                 $this->info("Course $idnumber not found in moodle");
                 continue;
@@ -68,35 +74,37 @@ class BackupCoursesCommand extends Command
 
             $moodle_id = $moodle_course->id;
 
-            if (in_array($moodle_id, $backed_up_ids))
-            {
+            if (in_array($moodle_id, $backed_up_ids)) {
                 $this->info("Course $idnumber already backed up");
                 continue;
             }
 
 
-                $this->info("Backing up course $idnumber");
-
-                
-                $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
-
-                $this->info("Backing up course $idnumber");
-                exec($command);
+            $this->info("Backing up course $idnumber");
 
 
-                //transfering backup to remote server
-                $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
-                $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
+            $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
-                $this->info("Transferring backup to remote server");
-                exec($remote_command);
-
-                //delete local backup
-                $this->info("Deleting local backup");
-                exec("rm -rf $backup_folder/*");
+            $this->info("Backing up course $idnumber");
+            exec($command);
 
 
-       
+            //transfering backup to remote server
+            $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
+            $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
+
+            $this->info("Transferring backup to remote server");
+            exec($remote_command);
+
+            //delete local backup
+            $this->info("Deleting local backup");
+            exec("rm -rf $backup_folder/*");
+
+            $this->info("Delete trashdir of moodle");
+            exec("rm -rf /home2/aubh/moodledata/trashdir/*");
+
+
+
 
 
 

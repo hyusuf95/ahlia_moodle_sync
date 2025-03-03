@@ -61,7 +61,7 @@ class ImportCoursesContent extends Command
                 $output = shell_exec($restore);
                 $this->info($output);
             } else {
-                $this->error("Backup file not found for $shortname");
+                $this->warn("Backup file not found for $shortname");
             }
         }
     }
