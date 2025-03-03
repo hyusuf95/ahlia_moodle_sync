@@ -35,6 +35,7 @@ class ImportCoursesContent extends Command
         foreach ($courses as $course) {
             $idnumber = $course->section_id;
             $moodle_course = MoodleCourse::find2($idnumber);
+            $moodle_id = $moodle_course->id;
             $shortname = $moodle_course->shortname;
 
             $moodle_root = config('sync.moodle.source_root');
@@ -44,7 +45,15 @@ class ImportCoursesContent extends Command
             $find = "find $backup_folder -name '*$shortname*'";
             $backup_file = exec($find);
 
-            $command = "php $moodle_root/admin/cli/restore.php --file=$backup_file --shortname=$shortname";
+            //if backup file found, restore it
+
+            if ($backup_file) {
+                $this->info("Restoring $shortname");
+                $restore = "php $moodle_root/admin/cli/restore_backup.php --file=$backup_file --courseid=$moodle_id";
+                dd($restore);
+            } else {
+                $this->error("Backup file not found for $shortname");
+            }
         }
     }
 }
