@@ -55,7 +55,7 @@ class BackupCoursesCommand extends Command
             foreach ($backedup as $line) {
                 $line = explode("-", $line);
                 $backed_up_id = $line[0];
-                dd($backed_up_id, $moodle_id);
+ 
                 if ($backed_up_id == $moodle_id) {
                     $this->info("Course $idnumber already backed up");
                     dd($backed_up_id, $moodle_id);
