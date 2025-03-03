@@ -47,7 +47,8 @@ class ImportCoursesContent extends Command
             $backup_folder = config('sync.moodle.courses.backup_folder');
 
             //find file that contains the shortname
-            $find = "find $backup_folder -name '*$shortname*'";
+            $find = "find $backup_folder -name '$shortname' -type f -printf '%T@ %p\n' | sort -nr | awk 'NR==1{print \$2}'";
+
             $backup_file = exec($find);
 
             dd($backup_file, $find);
