@@ -45,6 +45,8 @@ class ImportCoursesContent extends Command
             $find = "find $backup_folder -name '*$shortname*'";
             $backup_file = exec($find);
 
+            dd($backup_file, $find);
+
             //if backup file found, restore it
 
             if ($backup_file) {
