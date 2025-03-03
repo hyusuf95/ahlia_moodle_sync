@@ -28,7 +28,7 @@ class BackupCoursesCommand extends Command
     public function handle()
     {
         //if semester not provided, ask for it
-        $semester_id =  (int) ($this->option('semester'));
+        $semester_id = (int) ($this->option('semester'));
 
         $adreg = new AdregService();
         $courses = $adreg->sections($semester_id);
@@ -55,35 +55,34 @@ class BackupCoursesCommand extends Command
             foreach ($backedup as $line) {
                 $line = explode("-", $line);
                 $backed_up_id = $line[0];
- 
+
                 if ($backed_up_id == $moodle_id) {
-                    $this->info("Course $idnumber already backed up");
-                    
+                    $this->info("Skipping course $idnumber");
                     continue;
                 }
-                else
-                {
-                    
-            $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
 
-            $this->info("Backing up course $idnumber");
-            exec($command);
+                
+                $command = "php $moodle_path/admin/cli/backup.php --courseid=$moodle_id --destination=$backup_folder";
+
+                $this->info("Backing up course $idnumber");
+                exec($command);
 
 
-            //transfering backup to remote server
-            $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
-            $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
+                //transfering backup to remote server
+                $remote_path = '/home/moodle/ssd/moodle.ahlia.edu.bh/moodle_courses_backup';
+                $remote_command = "rsync -havz $backup_folder/ moodle_hetzner:$remote_path";
 
-            $this->info("Transferring backup to remote server");
-            exec($remote_command);
+                $this->info("Transferring backup to remote server");
+                exec($remote_command);
 
-            //delete local backup
-            $this->info("Deleting local backup");
-            exec("rm -rf $backup_folder/*");
-                }
+                //delete local backup
+                $this->info("Deleting local backup");
+                exec("rm -rf $backup_folder/*");
+
+
             }
 
-          
+
 
 
 
